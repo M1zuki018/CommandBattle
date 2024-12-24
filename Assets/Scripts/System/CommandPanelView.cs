@@ -22,6 +22,17 @@ public class CommandPanelView : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// 登録されているメソッドを解除
+    /// </summary>
+    public void Reset()
+    {
+        _attackButton.onClick.RemoveAllListeners();
+        _skillButton.onClick.RemoveAllListeners();
+        _defendButton.onClick.RemoveAllListeners();
+        _itemButton.onClick.RemoveAllListeners();
+    }
+
     public void Initialize(Action onAttack, Action onSkill, Action onDefend, Action onItem)
     {
         _attackButton.onClick.AddListener(() => onAttack());

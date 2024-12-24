@@ -6,7 +6,7 @@ public class BattleController : MonoBehaviour
 {
     [SerializeField] private BattleModel _battleModel;
      [SerializeField] private BattleView _battleView;
-    [SerializeField] private CommandPanelView _commandPanelView;
+    [SerializeField] private CommandPanelView _firstCommandPanelView, _commandPanelView;
     [SerializeField] private SkillPanelView _skillPanelView;
     [SerializeField] private ItemPanelView _itemPanelView;
 
@@ -22,16 +22,18 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void InitializeBattle()
     {
+        //データ設定
         var players = new List<CharacterModel>
         {
-            new CharacterModel("Hero", 100, 20, 10),
-            new CharacterModel("Mage", 80, 25, 5)
+            new CharacterModel("Stage", 100, 20, 10),
+            new CharacterModel("Mack", 80, 25, 5),
+            new CharacterModel("Un", 80, 25, 5),
+            new CharacterModel("Speaker", 80, 25, 5)
         };
 
         var enemies = new List<CharacterModel>
         {
-            new CharacterModel("Slime", 50, 10, 5),
-            new CharacterModel("Goblin", 70, 15, 8)
+            new CharacterModel("Flos", 50, 10, 5),
         };
 
         _battleModel = new BattleModel(players, enemies);
@@ -42,6 +44,7 @@ public class BattleController : MonoBehaviour
             return;
         }
         
+        //UI更新
         _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
         
         StartBattleFlow();
@@ -52,13 +55,7 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void StartBattleFlow()
     {
-        ShowInitialCommand();
-        
-        _battleView.ShowBattleStartAnimation(() =>
-        {
-            ShowInitialCommand();
-        });
-        
+        _battleView.ShowBattleStartAnimation(() => { ShowInitialCommand(); });
     }
     
     /// <summary>
@@ -66,8 +63,8 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void ShowInitialCommand()
     {
-        _commandPanelView.Show();
-        _commandPanelView.Initialize(
+        _firstCommandPanelView.Show();
+        _firstCommandPanelView.Initialize(
             OnFightSelected,
             OnEscapeSelected,
             null,
@@ -80,7 +77,7 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void OnFightSelected()
     {
-        _commandPanelView.Hide();
+        _firstCommandPanelView.Hide();
         StartCharacterTurn();
     }
     
@@ -89,9 +86,18 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void OnEscapeSelected()
     {
-        // 逃げる処理
-        Debug.Log("Player escaped!");
-        EndBattle();
+        int num = Random.Range(1, 100);
+        if (num <= 5)
+        {
+            //TODO: 逃走演出を行う
+            Debug.Log("Player escaped!");
+            EndBattle();
+        }
+        else
+        {
+            //TODO: 「にげられなかった」とパネルを表示したあとに、ShowInitialCommand()に戻る
+            Debug.Log("Player can't escape!");
+        }
     }
     
     /// <summary>
@@ -106,6 +112,8 @@ public class BattleController : MonoBehaviour
             return;
         }
 
+        Debug.Log("Action charactor" + _currentCharacterIndex);
+        //行動するキャラクターの情報を渡しつつ、行動選択開始
         var character = _battleModel.Players[_currentCharacterIndex];
         ShowCommandSelection(character);
     }
@@ -116,6 +124,7 @@ public class BattleController : MonoBehaviour
     private void ShowCommandSelection(CharacterModel character)
     {
         _commandPanelView.Show(); //コマンドパネルを開く
+        _commandPanelView.Reset();
         _commandPanelView.Initialize(
             () => OnAttackSelected(character),
             () => OnSkillSelected(character),
@@ -193,7 +202,7 @@ public class BattleController : MonoBehaviour
         }
         
         _currentCharacterIndex = 0;
-        StartCharacterTurn();
+        ShowInitialCommand();
     }
     
     /// <summary>
