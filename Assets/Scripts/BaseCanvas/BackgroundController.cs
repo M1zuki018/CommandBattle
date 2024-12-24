@@ -12,6 +12,7 @@ public class BackgroundController : SwitchableController<Sprite, BackgroundSO>
     private void ApplyBackground(Sprite sprite)
     {
         _background.sprite = sprite;
+        Debug.Log("Background applied");
     }
 
     [ContextMenu("NextBackground")]

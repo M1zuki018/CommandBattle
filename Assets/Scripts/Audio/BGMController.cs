@@ -10,6 +10,7 @@ public class BGMController : SwitchableController<AudioClip, BGMSO>
     private void ApplyBGM(AudioClip clip)
     {
         _audioSource.clip = clip;
+        Debug.Log("BGM applied");
         if (Application.isPlaying)
         {
             _audioSource.Play();
