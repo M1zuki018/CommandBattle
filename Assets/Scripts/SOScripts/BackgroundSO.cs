@@ -5,22 +5,16 @@ using UnityEngine;
 /// 背景に関連したクラス
 /// </summary>
 [CreateAssetMenu(fileName = "BackgroundSO", menuName = "UI/Background")]
-public class BackgroundSO : ScriptableObject
+public class BackgroundSO : ScriptableObject, ISwitchableData<Sprite>
 {
     [SerializeField] private List<Sprite> _backgroundSprites;
 
-    /// <summary>
-    /// 背景データを取得する
-    /// </summary>
-    public Sprite GetBackgroundSprite(int index)
+    public Sprite GetItem(int index)
     {
         return _backgroundSprites[index];
     }
-    
-    /// <summary>
-    /// 登録されている背景データの数を取得する
-    /// </summary>
-    public int GetBackgroundSpriteCount()
+
+    public int GetItemCount()
     {
         return _backgroundSprites.Count;
     }
