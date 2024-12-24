@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class SwitchableController<T, U> : MonoBehaviour where U : ISwitchableData<T>
+public class ISwitchableController<T, U> : MonoBehaviour where U : ISwitchableData<T>
 {
     [SerializeField] private U _data; // データ（背景やBGM）
     private int _currentIndex = 0;

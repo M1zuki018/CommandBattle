@@ -5,7 +5,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 背景を変更します
 /// </summary>
-public class BackgroundController : SwitchableController<Sprite, BackgroundSO>
+public class BackgroundController : ISwitchableController<Sprite, BackgroundSO>
 {
     [SerializeField] private Image _background;
 

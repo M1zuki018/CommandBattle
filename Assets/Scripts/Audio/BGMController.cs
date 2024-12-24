@@ -3,7 +3,7 @@ using UnityEngine;
 /// <summary>
 /// BGMを管理します
 /// </summary>
-public class BGMController : SwitchableController<AudioClip, BGMSO>
+public class BGMController : ISwitchableController<AudioClip, BGMSO>
 {
     [SerializeField] private AudioSource _audioSource;
 
