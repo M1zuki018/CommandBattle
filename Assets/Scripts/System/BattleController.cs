@@ -7,6 +7,7 @@ public class BattleController : MonoBehaviour
 {
     [SerializeField] private BattleModel _battleModel;
      [SerializeField] private BattleView _battleView;
+     [SerializeField] private CharacterUIView _characterUIView;
     [SerializeField] private CommandPanelView _firstCommandPanelView, _commandPanelView;
     [SerializeField] private SkillPanelView _skillPanelView;
     [SerializeField] private ItemPanelView _itemPanelView;
@@ -71,6 +72,7 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void ShowInitialCommand()
     {
+        //_characterUIView.Show();
         _movedCharacterIndex = 0;
         _firstCommandPanelView.Show();
         _firstCommandPanelView.Initialize(
@@ -122,7 +124,7 @@ public class BattleController : MonoBehaviour
             return;
         }
 
-        Debug.Log("Action charactor" + _currentCharacterIndex);
+        //Debug.Log("Action charactor" + _currentCharacterIndex);
         //行動するキャラクターの情報を渡しつつ、行動選択開始
         var character = _battleModel.Players[_currentCharacterIndex];
         ShowCommandSelection(character);
@@ -234,7 +236,6 @@ public class BattleController : MonoBehaviour
             ActionTypeEnum.Item => () => Debug.Log("Item Used"),
             _ => () => Debug.LogError("未対応のアクションタイプです"),
         };
-        Debug.Log($"Processing action: {action.ActionType}");
         executeAction();
     }
     

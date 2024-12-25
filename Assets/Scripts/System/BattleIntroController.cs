@@ -61,7 +61,7 @@ public class BattleIntroController : MonoBehaviour
         _bossDialogueText.gameObject.SetActive(true);
 
         // 一定時間セリフを表示した後に非表示
-        DOVirtual.DelayedCall(3f, () =>
+        DOVirtual.DelayedCall(2.5f, () =>
         {
             _bossDialogueText.gameObject.SetActive(false);
             onComplete?.Invoke();
@@ -90,10 +90,10 @@ public class BattleIntroController : MonoBehaviour
     private void ShowStartBattleText(Action onComplete)
     {
         _battleStartText.anchoredPosition = new Vector2(800, 0); // 初期位置（画面外）
-        _battleStartText.DOAnchorPos(Vector2.zero, textSlideDuration).SetEase(Ease.OutBounce).OnComplete(() =>
+        _battleStartText.DOAnchorPos(Vector2.zero, textSlideDuration).SetEase(Ease.InOutCubic).OnComplete(() =>
         {
             // 一定時間後にテキストを非表示
-            DOVirtual.DelayedCall(2f, () =>
+            DOVirtual.DelayedCall(1f, () =>
             {
                 _battleStartText.gameObject.SetActive(false);
                 onComplete?.Invoke();

@@ -30,6 +30,7 @@ public class Skill : MonoBehaviour
         {
             EffectTypeEnum.Attack => () => Attack(),
             EffectTypeEnum.Heal => () => Heal(),
+            EffectTypeEnum.SPHeal => () => SPHeal(),
             EffectTypeEnum.Buff => () => Buff(),
             EffectTypeEnum.Debuff => () => Debuff(),
             EffectTypeEnum.AttackWithEffect => () => AttackWithEffect(),
@@ -37,6 +38,7 @@ public class Skill : MonoBehaviour
         };
         
         effect.Invoke();
+        UseResource();
     }
 
     /// <summary>
@@ -54,6 +56,15 @@ public class Skill : MonoBehaviour
     {
         _target.HP += _skill.EffectValue;
         Debug.Log("回復した！");
+    }
+
+    /// <summary>
+    /// SP回復スキルの効果
+    /// </summary>
+    private void SPHeal()
+    {
+        _target.SP += _skill.EffectValue;
+        Debug.Log("SPが回復した！");
     }
 
     /// <summary>
@@ -89,4 +100,23 @@ public class Skill : MonoBehaviour
     }
     
     //TODO: 攻撃ターゲットの処理を実装する
+
+    /// <summary>
+    /// リソースを減らす処理
+    /// </summary>
+    private void UseResource()
+    {
+        switch (_skill.ResourceType)
+        {
+            case ResourceTypeEnum.SP:
+                _user.SP -= _skill.ResourceCost;
+                break;
+            case ResourceTypeEnum.TP:
+                _user.TP -= _skill.ResourceCost;
+                break;
+            case ResourceTypeEnum.HP:
+                _user.HP -= _skill.ResourceCost;
+                break;
+        }
+    }
 }

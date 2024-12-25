@@ -5,6 +5,7 @@ public enum EffectTypeEnum
 {
     Attack,         // 攻撃
     Heal,           // 回復
+    SPHeal,         // SP回復
     Buff,           // バフ
     Debuff,         // デバフ
     AttackWithEffect, // 追加効果付き攻撃

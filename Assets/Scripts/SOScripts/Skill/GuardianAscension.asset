@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96e3dd30f09eac4bbc9f6311bb83aa2, type: 3}
+  m_Name: GuardianAscension
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: b34ed4edc2ad6bf4cabef5b043126ca4, type: 3}
+  Name: "\u30AC\u30FC\u30C7\u30A3\u30A2\u30F3\u30A2\u30BB\u30F3\u30B7\u30E7\u30F3"
+  Description: "1\u30BF\u30FC\u30F3\u7121\u6575"
+  TargetType: 1
+  EffectType: 3
+  AttributeType: 1
+  EffectValue: 0
+  EffectDuration: 1
+  HitCount: 1
+  ResourceType: 0
+  ResourceCost: 30

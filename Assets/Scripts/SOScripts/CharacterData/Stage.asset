@@ -24,3 +24,10 @@ MonoBehaviour:
   Sprite2: {fileID: 21300000, guid: 8884c8b4bdf75e14a91c5c1d309d0d47, type: 3}
   Skills:
   - {fileID: 11400000, guid: 3f033dab534bc694c89dda840ef80ac9, type: 2}
+  - {fileID: 11400000, guid: 40e19d958f70e4a48933dfe9507105e8, type: 2}
+  - {fileID: 11400000, guid: d214e894240803d45af0b2baabcb78e3, type: 2}
+  - {fileID: 11400000, guid: ac024d9d5324f4043b604d9f1aa8d269, type: 2}
+  - {fileID: 11400000, guid: 25a0da6a78027be40a1744461ecdf14a, type: 2}
+  - {fileID: 11400000, guid: e2e3bbf3c53be3b4ab4420eb124f749b, type: 2}
+  - {fileID: 11400000, guid: 10a3757662d8ea74a8cadf62ab95858c, type: 2}
+  - {fileID: 11400000, guid: 5ace6c385efe1bf4db32f908e130f6e4, type: 2}
