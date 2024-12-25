@@ -7,6 +7,7 @@ using UnityEngine.UI;
 /// </summary>
 public class CommandPanelView : MonoBehaviour
 {
+    [SerializeField] private Image _characterImage;
     [SerializeField] private Button _attackButton;
     [SerializeField] private Button _skillButton;
     [SerializeField] private Button _defendButton;
@@ -33,8 +34,9 @@ public class CommandPanelView : MonoBehaviour
         _itemButton.onClick.RemoveAllListeners();
     }
 
-    public void Initialize(Action onAttack, Action onSkill, Action onDefend, Action onItem)
+    public void Initialize(Sprite charaImage, Action onAttack, Action onSkill, Action onDefend, Action onItem)
     {
+        if(charaImage is not null) _characterImage.sprite = charaImage;
         _attackButton.onClick.AddListener(() => onAttack());
         _skillButton.onClick.AddListener(() => onSkill());
         _defendButton.onClick.AddListener(() => onDefend());

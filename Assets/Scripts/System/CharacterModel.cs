@@ -8,19 +8,28 @@ public class CharacterModel
     public string Name { get; private set; }
     public int HP { get; private set; }
     public int MaxHP { get; private set; }
+    public int SP { get; private set; }
+    public int MaxSP { get; private set; }
     public int Attack { get; private set; }
     public int Defense { get; private set; }
+    
+    public Sprite Sprite1 { get; private set; }
+    public Sprite Sprite2 { get; private set; }
 
     /// <summary>
     /// キャラクター情報を登録します
     /// </summary>
-    public CharacterModel(string name, int maxHP, int attack, int defense)
+    public CharacterModel(CharacterDataSO characterDataSO)
     {
-        Name = name;
-        MaxHP = maxHP;
-        HP = maxHP;
-        Attack = attack;
-        Defense = defense;
+        Name = characterDataSO.Name;
+        MaxHP = characterDataSO.MaxHP;
+        HP = MaxHP;
+        MaxSP = characterDataSO.MaxSP;
+        SP = MaxSP;
+        Attack = characterDataSO.Aatack;
+        Defense = characterDataSO.Defense;
+        Sprite1 = characterDataSO.Sprite1;
+        Sprite2 = characterDataSO.Sprite2;
     }
 
     /// <summary>

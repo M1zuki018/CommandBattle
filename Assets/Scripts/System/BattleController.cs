@@ -11,6 +11,8 @@ public class BattleController : MonoBehaviour
     [SerializeField] private SkillPanelView _skillPanelView;
     [SerializeField] private ItemPanelView _itemPanelView;
 
+    [SerializeField] List<CharacterDataSO> _characterDataList;
+    
     private int _currentCharacterIndex = 0;
     private int _movedCharacterIndex = 0;
     
@@ -30,15 +32,15 @@ public class BattleController : MonoBehaviour
         //データ設定
         players = new List<CharacterModel>
         {
-            new CharacterModel("Stage", 100, 20, 10),
-            new CharacterModel("Mack", 80, 25, 5),
-            new CharacterModel("Un", 80, 25, 5),
-            new CharacterModel("Speaker", 80, 25, 5)
+            new CharacterModel(_characterDataList[0]),
+            new CharacterModel(_characterDataList[1]),
+            new CharacterModel(_characterDataList[2]),
+            new CharacterModel(_characterDataList[3])
         };
 
         enemies = new List<CharacterModel>
         {
-            new CharacterModel("Flos", 50, 10, 5),
+            new CharacterModel(_characterDataList[4]),
         };
 
         _battleModel = new BattleModel(players, enemies);
@@ -71,6 +73,7 @@ public class BattleController : MonoBehaviour
         _movedCharacterIndex = 0;
         _firstCommandPanelView.Show();
         _firstCommandPanelView.Initialize(
+            null,
             OnFightSelected,
             OnEscapeSelected,
             null,
@@ -132,6 +135,7 @@ public class BattleController : MonoBehaviour
         _commandPanelView.Show(); //コマンドパネルを開く
         _commandPanelView.Reset();
         _commandPanelView.Initialize(
+            character.Sprite2,
             () => OnAttackSelected(character),
             () => OnSkillSelected(character),
             () => OnDefendSelected(character),
@@ -140,7 +144,7 @@ public class BattleController : MonoBehaviour
     }
     
     /// <summary>
-    /// 「こうげき」コマンド
+    /// 「こうげき」ボタンに割り当てられる処理
     /// </summary>
     private void OnAttackSelected(CharacterModel character)
     {
@@ -152,7 +156,7 @@ public class BattleController : MonoBehaviour
     
     
     /// <summary>
-    /// 「スキル」コマンド
+    /// 「スキル」ボタンに割り当てられる処理
     /// </summary>
     private void OnSkillSelected(CharacterModel character)
     {
@@ -169,7 +173,7 @@ public class BattleController : MonoBehaviour
     }
     
     /// <summary>
-    /// 「防御」コマンド
+    /// 「防御」ボタンに割り当てられる処理
     /// </summary>
     private void OnDefendSelected(CharacterModel character)
     {
@@ -180,7 +184,7 @@ public class BattleController : MonoBehaviour
     }
     
     /// <summary>
-    /// 「アイテム」コマンド
+    /// 「アイテム」ボタンに割り当てられる処理
     /// </summary>
     private void OnItemSelected(CharacterModel character)
     {
@@ -245,6 +249,7 @@ public class BattleController : MonoBehaviour
 
         // エフェクトやアニメーションを追加（例: エフェクト再生）
         ShowAttackEffect(target);
+        _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
         
         //次のキャラクターへ進む
         _movedCharacterIndex++;
