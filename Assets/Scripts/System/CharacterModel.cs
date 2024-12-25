@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,6 +16,8 @@ public class CharacterModel
     
     public Sprite Sprite1 { get; private set; }
     public Sprite Sprite2 { get; private set; }
+    
+    public List<SkillDataSO> Skills { get; private set; }
 
     /// <summary>
     /// キャラクター情報を登録します
@@ -30,6 +33,7 @@ public class CharacterModel
         Defense = characterDataSO.Defense;
         Sprite1 = characterDataSO.Sprite1;
         Sprite2 = characterDataSO.Sprite2;
+        Skills = characterDataSO.Skills;
     }
 
     /// <summary>

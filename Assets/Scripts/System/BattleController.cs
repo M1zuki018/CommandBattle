@@ -137,7 +137,7 @@ public class BattleController : MonoBehaviour
         _commandPanelView.Initialize(
             character.Sprite2,
             () => OnAttackSelected(character),
-            () => OnSkillSelected(character),
+            () => ShowSkillSelected(character),
             () => OnDefendSelected(character),
             () => OnItemSelected(character)
         );
@@ -158,18 +158,22 @@ public class BattleController : MonoBehaviour
     /// <summary>
     /// 「スキル」ボタンに割り当てられる処理
     /// </summary>
-    private void OnSkillSelected(CharacterModel character)
+    private void ShowSkillSelected(CharacterModel character)
     {
-        /*
         _skillPanelView.Show();
-        _skillPanelView.Initialize(skillName =>
-        {
-            _skillPanelView.Hide();
-            _battleModel.EnqueueAction(new CharacterAction { ActionType = ActionTypeEnum.Skill, SkillName = skillName, TargetIndex = 0 });
-            _currentCharacterIndex++;
-            StartCharacterTurn();
-        });
-        */
+        _skillPanelView.Initialize(character.Skills, OnSkillSelected);
+        _commandPanelView.Hide();
+    }
+
+    /// <summary>
+    /// スキルパネルでスキルが選択されたら呼び出される処理。次のキャラクターの行動選択へ進める
+    /// </summary>
+    private void OnSkillSelected()
+    {
+        _skillPanelView.Hide();
+        _battleModel.EnqueueAction(new CharacterAction { ActionType = ActionTypeEnum.Skill, TargetIndex = 0 });
+        _currentCharacterIndex++;
+        StartCharacterTurn();
     }
     
     /// <summary>
