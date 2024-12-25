@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +6,7 @@ public class BattleView : MonoBehaviour
 {
     [SerializeField] private CharacterView[] _playerViews;
     [SerializeField] private CharacterView[] _enemyViews;
+    [SerializeField] private BattleIntroController _battleIntroController;
 
     public void UpdateAllViews(List<CharacterModel> players, List<CharacterModel> enemies)
     {
@@ -37,19 +37,15 @@ public class BattleView : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 開始演出を再生する
+    /// </summary>
     public void ShowBattleStartAnimation(Action onComplete)
     {
-        Debug.Log("アニメーションスタート");
-
-        // 指定時間後にコールバックを呼び出す
-        StartCoroutine(WaitForAnimation(1f, onComplete));
-    }
-    
-    private IEnumerator WaitForAnimation(float duration, Action onComplete)
-    {
-        yield return new WaitForSeconds(duration);
-
-        // コールバックを実行
-        onComplete?.Invoke();
+        _battleIntroController.StartBattleIntro(()=>
+        {
+            Debug.Log("アニメーション完了");
+            onComplete?.Invoke();
+        });
     }
 }
