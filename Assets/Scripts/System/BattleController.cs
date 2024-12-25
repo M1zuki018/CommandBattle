@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class BattleController : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class BattleController : MonoBehaviour
     [SerializeField] private ItemPanelView _itemPanelView;
 
     private int _currentCharacterIndex = 0;
+    private int _movedCharacterIndex = 0;
+    
+    private List<CharacterModel> players = new List<CharacterModel>();
+    private List<CharacterModel> enemies = new List<CharacterModel>();
     private void Start()
     {
         // 初期化
@@ -23,7 +28,7 @@ public class BattleController : MonoBehaviour
     private void InitializeBattle()
     {
         //データ設定
-        var players = new List<CharacterModel>
+        players = new List<CharacterModel>
         {
             new CharacterModel("Stage", 100, 20, 10),
             new CharacterModel("Mack", 80, 25, 5),
@@ -31,7 +36,7 @@ public class BattleController : MonoBehaviour
             new CharacterModel("Speaker", 80, 25, 5)
         };
 
-        var enemies = new List<CharacterModel>
+        enemies = new List<CharacterModel>
         {
             new CharacterModel("Flos", 50, 10, 5),
         };
@@ -63,6 +68,7 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void ShowInitialCommand()
     {
+        _movedCharacterIndex = 0;
         _firstCommandPanelView.Show();
         _firstCommandPanelView.Initialize(
             OnFightSelected,
@@ -210,7 +216,44 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void ProcessAction(CharacterAction action)
     {
+        Action executeAction = action.ActionType switch
+        {
+            ActionTypeEnum.Attack => () => ExecuteAttackCommand(0),
+            ActionTypeEnum.Skill => () => Debug.Log("Skill Used"),
+            ActionTypeEnum.Guard => () => Debug.Log("Gaurd"),
+            ActionTypeEnum.Item => () => Debug.Log("Item Used"),
+            _ => () => Debug.LogError("未対応のアクションタイプです"),
+        };
         Debug.Log($"Processing action: {action.ActionType}");
+        executeAction();
+    }
+    
+    /// <summary>
+    /// 「こうげき」コマンドの処理
+    /// </summary>
+    public void ExecuteAttackCommand(int targetIndex)
+    {
+        if (targetIndex < 0 || targetIndex >= enemies.Count)
+        {
+            Debug.LogError("無効なターゲットインデックスです！");
+            return;
+        }
+
+        CharacterModel target = enemies[targetIndex];
+        target.TakeDamage(players[_movedCharacterIndex].CalculateDamage(target.Defense));
+        Debug.Log(target.HP);
+
+        // エフェクトやアニメーションを追加（例: エフェクト再生）
+        ShowAttackEffect(target);
+        
+        //次のキャラクターへ進む
+        _movedCharacterIndex++;
+    }
+
+    private void ShowAttackEffect(CharacterModel target)
+    {
+        Debug.Log($"{target.Name}に攻撃エフェクトを再生！");
+        // TODO: 攻撃エフェクトやアニメーションを実装
     }
     
     /// <summary>
