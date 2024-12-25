@@ -948,6 +948,7 @@ GameObject:
   - component: {fileID: 213538278}
   - component: {fileID: 213538277}
   - component: {fileID: 213538279}
+  - component: {fileID: 213538280}
   m_Layer: 0
   m_Name: ===System===
   m_TagString: Untagged
@@ -1007,6 +1008,7 @@ MonoBehaviour:
   _commandPanelView: {fileID: 1139845958}
   _skillPanelView: {fileID: 186371904}
   _itemPanelView: {fileID: 1987023707}
+  _skillController: {fileID: 213538280}
   _characterDataList:
   - {fileID: 11400000, guid: 6cc61212f919ecf4584403d5edc407ee, type: 2}
   - {fileID: 11400000, guid: 701632acab7fc224baf61ae179f40a98, type: 2}
@@ -1032,6 +1034,18 @@ MonoBehaviour:
   cameraZoomDuration: 0.5
   textSlideDuration: 1
   bossDialogue: "\u6B8B\u696D\uFF1F\u306F\u3044\u3002"
+--- !u!114 &213538280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213538275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78afaba601e90f74fb1c29d015fdc54d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &239298521
 GameObject:
   m_ObjectHideFlags: 0

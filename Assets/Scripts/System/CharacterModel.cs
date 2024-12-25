@@ -7,7 +7,7 @@ using UnityEngine;
 public class CharacterModel
 {
     public string Name { get; private set; }
-    public int HP { get; private set; }
+    public int HP { get; set; }
     public int MaxHP { get; private set; }
     public int SP { get; private set; }
     public int MaxSP { get; private set; }
@@ -16,7 +16,7 @@ public class CharacterModel
     public int Attack { get; private set; }
     public int Defense { get; private set; }
     
-    public int Speed { get; private set; }
+    public int Speed { get; set; }
     
     public int Critical { get; private set; }
     

@@ -10,7 +10,8 @@ public class BattleController : MonoBehaviour
     [SerializeField] private CommandPanelView _firstCommandPanelView, _commandPanelView;
     [SerializeField] private SkillPanelView _skillPanelView;
     [SerializeField] private ItemPanelView _itemPanelView;
-
+    [SerializeField] private Skill _skillController;
+    
     [SerializeField] List<CharacterDataSO> _characterDataList;
     
     private int _currentCharacterIndex = 0;
@@ -161,7 +162,7 @@ public class BattleController : MonoBehaviour
     private void ShowSkillSelected(CharacterModel character)
     {
         _skillPanelView.Show();
-        _skillPanelView.Initialize(character.Skills, OnSkillSelected);
+        _skillPanelView.Initialize(character, character.Skills, OnSkillSelected);
         _commandPanelView.Hide();
     }
 
@@ -171,7 +172,7 @@ public class BattleController : MonoBehaviour
     private void OnSkillSelected()
     {
         _skillPanelView.Hide();
-        _battleModel.EnqueueAction(new CharacterAction { ActionType = ActionTypeEnum.Skill, TargetIndex = 0 });
+        _battleModel.EnqueueAction(new CharacterAction { ActionType = ActionTypeEnum.Skill, Skill = _skillPanelView.SelectedSkill});
         _currentCharacterIndex++;
         StartCharacterTurn();
     }
@@ -182,6 +183,7 @@ public class BattleController : MonoBehaviour
     private void OnDefendSelected(CharacterModel character)
     {
         _commandPanelView.Hide();
+        character.Speed += 20;
         _battleModel.EnqueueAction(new CharacterAction { ActionType = ActionTypeEnum.Guard });
         _currentCharacterIndex++;
         StartCharacterTurn();
@@ -227,8 +229,8 @@ public class BattleController : MonoBehaviour
         Action executeAction = action.ActionType switch
         {
             ActionTypeEnum.Attack => () => ExecuteAttackCommand(0),
-            ActionTypeEnum.Skill => () => Debug.Log("Skill Used"),
-            ActionTypeEnum.Guard => () => Debug.Log("Gaurd"),
+            ActionTypeEnum.Skill => () => ExecuteSkillCommand(action.Skill),
+            ActionTypeEnum.Guard => () => ExecuteGuardCommand(),
             ActionTypeEnum.Item => () => Debug.Log("Item Used"),
             _ => () => Debug.LogError("未対応のアクションタイプです"),
         };
@@ -263,6 +265,30 @@ public class BattleController : MonoBehaviour
     {
         Debug.Log($"{target.Name}に攻撃エフェクトを再生！");
         // TODO: 攻撃エフェクトやアニメーションを実装
+    }
+
+    /// <summary>
+    /// 「スキル」コマンドの処理
+    /// </summary>
+    public void ExecuteSkillCommand(SkillDataSO skill)
+    {
+        _skillController.SkillActivate(skill, players[_movedCharacterIndex], enemies[0]);
+        _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
+        
+        //次のキャラクターへ進む
+        _movedCharacterIndex++;
+    }
+
+    /// <summary>
+    /// 「防御」コマンドの処理
+    /// </summary>
+    public void ExecuteGuardCommand()
+    {
+        players[_movedCharacterIndex].Speed -= 20;
+        Debug.Log($"{players[_movedCharacterIndex].Name} は身を守った");
+        
+        //次のキャラクターへ進む
+        _movedCharacterIndex++;
     }
     
     /// <summary>

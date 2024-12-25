@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 /// <summary>
 /// スキルのデータ
@@ -22,4 +24,15 @@ public class SkillDataSO : ScriptableObject
     [Header("リソース設定")]
     public ResourceTypeEnum ResourceType;   // 消費リソース
     public int ResourceCost;            // リソースの消費量
+    
+    /// <summary>カスタム処理</summary>
+    public event Action<Character, Character> OnSkillUse;
+    
+    /// <summary>
+    /// 実行メソッド
+    /// </summary>
+    public void ExecuteSkill(Character user, Character target)
+    {
+        OnSkillUse?.Invoke(user, target);
+    }
 }
