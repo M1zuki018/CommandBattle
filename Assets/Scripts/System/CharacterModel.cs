@@ -11,8 +11,16 @@ public class CharacterModel
     public int MaxHP { get; private set; }
     public int SP { get; private set; }
     public int MaxSP { get; private set; }
+    
+    public int TP { get; private set; }
     public int Attack { get; private set; }
     public int Defense { get; private set; }
+    
+    public int Speed { get; private set; }
+    
+    public int Critical { get; private set; }
+    
+    public int CriticalDamage { get; private set; }
     
     public Sprite Sprite1 { get; private set; }
     public Sprite Sprite2 { get; private set; }
@@ -29,8 +37,12 @@ public class CharacterModel
         HP = MaxHP;
         MaxSP = characterDataSO.MaxSP;
         SP = MaxSP;
+        TP = 0;
         Attack = characterDataSO.Aatack;
         Defense = characterDataSO.Defense;
+        Speed = characterDataSO.Speed;
+        Critical = characterDataSO.Critical;
+        CriticalDamage = characterDataSO.CriticalDamage;
         Sprite1 = characterDataSO.Sprite1;
         Sprite2 = characterDataSO.Sprite2;
         Skills = characterDataSO.Skills;
