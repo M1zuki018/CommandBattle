@@ -6,14 +6,15 @@ using Random = UnityEngine.Random;
 public class BattleController : MonoBehaviour
 {
     [SerializeField] private BattleModel _battleModel;
-     [SerializeField] private BattleView _battleView;
-     [SerializeField] private CharacterUIView _characterUIView;
+    [SerializeField] private BattleView _battleView;
+    [SerializeField] private CharacterUIView _characterUIView;
     [SerializeField] private CommandPanelView _firstCommandPanelView, _commandPanelView;
     [SerializeField] private SkillPanelView _skillPanelView;
     [SerializeField] private ItemPanelView _itemPanelView;
     [SerializeField] private Skill _skillController;
     
-    [SerializeField] List<CharacterDataSO> _characterDataList;
+    [SerializeField] private List<CharacterDataSO> _characterDataList;
+    [SerializeField] private List<ItemData> _playerItems; // プレイヤーのアイテムリスト
     
     private int _currentCharacterIndex = 0;
     private int _movedCharacterIndex = 0;
@@ -55,6 +56,7 @@ public class BattleController : MonoBehaviour
         
         //UI更新
         _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
+        _itemPanelView.InitializeItemPanel(_playerItems, OnItemSelected);
         
         StartBattleFlow();
     }
@@ -142,7 +144,7 @@ public class BattleController : MonoBehaviour
             () => OnAttackSelected(character),
             () => ShowSkillSelected(character),
             () => OnDefendSelected(character),
-            () => OnItemSelected(character)
+            () => ShowItemSelected(character)
         );
     }
     
@@ -194,18 +196,22 @@ public class BattleController : MonoBehaviour
     /// <summary>
     /// 「アイテム」ボタンに割り当てられる処理
     /// </summary>
-    private void OnItemSelected(CharacterModel character)
+    private void ShowItemSelected(CharacterModel character)
     {
-        /*
         _itemPanelView.Show();
-        _itemPanelView.Initialize(itemName =>
-        {
-            _itemPanelView.Hide();
-            _battleModel.EnqueueAction(new CharacterAction { ActionType = ActionTypeEnum.Item, ItemName = itemName });
-            _currentCharacterIndex++;
-            StartCharacterTurn();
-        });
-        */
+        _itemPanelView.UpdateItemQuantities();
+        _commandPanelView.Hide();
+    }
+    
+    /// <summary>
+    /// アイテムパネルでスキルが選択されたら呼び出される処理。次のキャラクターの行動選択へ進める
+    /// </summary>
+    private void OnItemSelected(ItemData itemData)
+    {
+        _itemPanelView.Hide();
+        _battleModel.EnqueueAction(new CharacterAction { ActionType = ActionTypeEnum.Item, Item = _itemPanelView.SelectedItem });
+        _currentCharacterIndex++;
+        StartCharacterTurn();
     }
 
     /// <summary>
@@ -233,7 +239,7 @@ public class BattleController : MonoBehaviour
             ActionTypeEnum.Attack => () => ExecuteAttackCommand(0),
             ActionTypeEnum.Skill => () => ExecuteSkillCommand(action.Skill),
             ActionTypeEnum.Guard => () => ExecuteGuardCommand(),
-            ActionTypeEnum.Item => () => Debug.Log("Item Used"),
+            ActionTypeEnum.Item => () => ExecuteItemCommand(action.Item),
             _ => () => Debug.LogError("未対応のアクションタイプです"),
         };
         executeAction();
@@ -287,6 +293,17 @@ public class BattleController : MonoBehaviour
     {
         players[_movedCharacterIndex].Speed -= 20;
         Debug.Log($"{players[_movedCharacterIndex].Name} は身を守った");
+        
+        //次のキャラクターへ進む
+        _movedCharacterIndex++;
+    }
+
+    /// <summary>
+    /// 「アイテム」コマンドの処理
+    /// </summary>
+    public void ExecuteItemCommand(ItemData item)
+    {
+        Debug.Log($"{players[_movedCharacterIndex].Name} はアイテムを使用した");
         
         //次のキャラクターへ進む
         _movedCharacterIndex++;
