@@ -8,6 +8,7 @@ public class CharacterView : MonoBehaviour
 {
     [SerializeField] private Text _nameText;
     [SerializeField] private Slider _hpSlider, _spSlider;
+    [SerializeField] private Image _tpSlider;
     [SerializeField] private Text _hpText, _spText;
 
     public void UpdateView(CharacterModel character)
@@ -19,6 +20,7 @@ public class CharacterView : MonoBehaviour
         _spSlider.value = character.SP;
         _hpText.text = $"{character.HP}/{character.MaxHP}";
         _spText.text = $"{character.SP}/{character.MaxSP}";
+        _tpSlider.fillAmount = character.TP / 100;
     }
 
     public void PlayDamageAnimation()

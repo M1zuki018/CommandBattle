@@ -65,8 +65,7 @@ public class ItemPanelView : MonoBehaviour
     {
         for (int i = 0; i < _itemList.Count; i++)
         {
-            //_quantityTexts[i].text = $"{_itemList[i].Name} (x{_itemList[i].Quantity})";
-
+            _quantityTexts[i].text = $"{_itemList[i].Name} (x{_itemList[i].Quantity})";
             // 個数が0ならボタンを無効化
             _itemButtons[i].interactable = _itemList[i].Quantity > 0;
         }
@@ -77,5 +76,6 @@ public class ItemPanelView : MonoBehaviour
     {
         Debug.Log($"Item {item.Name} selected.");
         onItemSelected?.Invoke(item); // コールバックを実行
+        item.Quantity--;
     }
 }

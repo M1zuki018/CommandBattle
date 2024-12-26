@@ -12,6 +12,7 @@ public class BattleController : MonoBehaviour
     [SerializeField] private SkillPanelView _skillPanelView;
     [SerializeField] private ItemPanelView _itemPanelView;
     [SerializeField] private Skill _skillController;
+    [SerializeField] private Item _itemController;
     
     [SerializeField] private List<CharacterDataSO> _characterDataList;
     [SerializeField] private List<ItemData> _playerItems; // プレイヤーのアイテムリスト
@@ -225,10 +226,24 @@ public class BattleController : MonoBehaviour
             ProcessAction(action);
         }
         
+        EnemyAttack();
+
         _currentCharacterIndex = 0;
         ShowInitialCommand();
     }
-    
+
+    /// <summary>
+    /// 敵の攻撃処理
+    /// </summary>
+    private void EnemyAttack()
+    {
+        int rand = Random.Range(0, _battleModel.Players.Count);
+        int damage = _battleModel.Enemies[0].CalculateDamage(_battleModel.Players[rand].Defense);
+        _battleModel.Players[rand].TakeDamage(damage);
+        _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
+        Debug.Log(_battleModel.Players[rand].HP);
+    }
+
     /// <summary>
     /// 各行動の処理
     /// </summary>
@@ -279,7 +294,7 @@ public class BattleController : MonoBehaviour
     /// </summary>
     public void ExecuteSkillCommand(SkillDataSO skill)
     {
-        _skillController.SkillActivate(skill, players[_movedCharacterIndex], enemies[0]);
+        _skillController.SkillActivate(skill, _battleModel.Players[_movedCharacterIndex], _battleModel.Enemies[0]);
         _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
         
         //次のキャラクターへ進む
@@ -291,8 +306,8 @@ public class BattleController : MonoBehaviour
     /// </summary>
     public void ExecuteGuardCommand()
     {
-        players[_movedCharacterIndex].Speed -= 20;
-        Debug.Log($"{players[_movedCharacterIndex].Name} は身を守った");
+        _battleModel.Players[_movedCharacterIndex].Speed -= 20;
+        Debug.Log($"{_battleModel.Players[_movedCharacterIndex].Name} は身を守った");
         
         //次のキャラクターへ進む
         _movedCharacterIndex++;
@@ -303,7 +318,8 @@ public class BattleController : MonoBehaviour
     /// </summary>
     public void ExecuteItemCommand(ItemData item)
     {
-        Debug.Log($"{players[_movedCharacterIndex].Name} はアイテムを使用した");
+        _itemController.ItemActivate(item, _battleModel.Players[_movedCharacterIndex], _battleModel.Players[1]);
+        _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
         
         //次のキャラクターへ進む
         _movedCharacterIndex++;
