@@ -7,6 +7,8 @@ using UnityEngine;
 public class CharacterModel
 {
     public string Name { get; private set; }
+    
+    public bool IsPlayer { get; private set; }
     public int HP { get; set; }
     public int MaxHP { get; private set; }
     public int SP { get; set; }
@@ -33,6 +35,7 @@ public class CharacterModel
     public CharacterModel(CharacterDataSO characterDataSO)
     {
         Name = characterDataSO.Name;
+        IsPlayer = characterDataSO.IsPlayer;
         MaxHP = characterDataSO.MaxHP;
         HP = MaxHP;
         MaxSP = characterDataSO.MaxSP;

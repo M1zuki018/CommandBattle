@@ -4,7 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CharacterData", menuName = "Battle/CharacterData")]
 public class CharacterDataSO : ScriptableObject
 {
-    public string Name;       
+    public string Name;
+    public bool IsPlayer;
     public int MaxHP;                 
     public int MaxSP;            
     public int Aatack;

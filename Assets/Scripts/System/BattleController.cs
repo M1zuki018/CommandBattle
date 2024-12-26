@@ -220,28 +220,54 @@ public class BattleController : MonoBehaviour
     /// </summary>
     private void ExecuteBattleActions()
     {
-        while (_battleModel.ActionsQueue.Count > 0)
+        List<CharacterModel> allCharacters = new List<CharacterModel>();
+        allCharacters.AddRange(_battleModel.Players);
+        allCharacters.AddRange(_battleModel.Enemies);
+        
+        allCharacters.Sort((a, b) => b.Speed.CompareTo(a.Speed));
+
+        foreach (var character in allCharacters)
         {
-            var action = _battleModel.DequeueAction();
-            ProcessAction(action);
+            if(character.IsDead()) continue;
+
+            if (character.IsPlayer)
+            {
+                var action = _battleModel.DequeueAction();
+                ProcessAction(action);
+            }
+            else
+            {
+                var target = GetRandomTarget(_battleModel.Players);
+                ExecuteEnemyAttack(character, target);
+            }
+
+            Debug.Log($"{character.Name}の行動");
         }
         
-        EnemyAttack();
-
+        //次のターンを初期化
         _currentCharacterIndex = 0;
         ShowInitialCommand();
     }
-
+    
     /// <summary>
     /// 敵の攻撃処理
     /// </summary>
-    private void EnemyAttack()
+    private void ExecuteEnemyAttack(CharacterModel character, CharacterModel target)
     {
-        int rand = Random.Range(0, _battleModel.Players.Count);
-        int damage = _battleModel.Enemies[0].CalculateDamage(_battleModel.Players[rand].Defense);
-        _battleModel.Players[rand].TakeDamage(damage);
+        
+        int damage = _battleModel.Enemies[0].CalculateDamage(target.Defense);
+        target.TakeDamage(damage);
         _battleView.UpdateAllViews(_battleModel.Players, _battleModel.Enemies);
-        Debug.Log(_battleModel.Players[rand].HP);
+    }
+
+    /// <summary>
+    /// 生存者の中からターゲットをランダムで取得する 
+    /// </summary>
+      private CharacterModel GetRandomTarget(List<CharacterModel> characters)
+    {
+        var aliveCharacters = characters.FindAll(c => c.HP > 0);
+        if (aliveCharacters.Count == 0) return null; // 生存者がいない場合はnullを返す
+        return aliveCharacters[Random.Range(0, aliveCharacters.Count)];
     }
 
     /// <summary>

@@ -11,6 +11,9 @@ public class CharacterView : MonoBehaviour
     [SerializeField] private Image _tpSlider;
     [SerializeField] private Text _hpText, _spText;
 
+    /// <summary>
+    /// UIを更新します
+    /// </summary>
     public void UpdateView(CharacterModel character)
     {
         _nameText.text = character.Name;
